@@ -17,7 +17,7 @@ export function LandingPage(){
 
         </div>
         <div className="flex justify-center">
-            <Button onClick={()=> navigate('/booking')}>Book Your Appointment</Button>
+            <Button onClick={()=> navigate('/lawyers')}>Book Your Appointment</Button>
         </div>
         </div>
 
