@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Layout } from "./components/Layout"
 import { LandingPage } from "./components/LandingPage"
 import { AboutPage } from "./components/About"
-import './app.css';
+import './App.css';
 import { Lawyers } from "./components/Lawyers";
 import {Toaster} from 'sonner'
 import { AppointmentDetails } from "./components/AppointmentDetails";
