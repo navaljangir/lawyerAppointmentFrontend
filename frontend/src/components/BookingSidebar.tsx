@@ -69,7 +69,7 @@ export function BookingSideBar() {
         duration : 2000, 
         className : "text-green-600"
     })
-        navigate(`/details/${aId}`)
+        navigate(`/details` , {state : {aId : aId} })
     }
     
     useEffect(() => {

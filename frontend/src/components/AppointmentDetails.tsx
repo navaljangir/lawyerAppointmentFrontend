@@ -7,7 +7,7 @@ import { lawyerDetailType } from "src/lib/slices/bookingDetails";
 import { LawyerDetailsPage } from "./LawyerDetails";
 import { useSelector } from "react-redux";
 import { IRootState } from "src/lib/store";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 interface userAppointmentType  {
@@ -22,7 +22,8 @@ interface userAppointmentType  {
 }
 export function AppointmentDetails(){
     const phone= useRef("");
-    const {aId} = useParams()
+    const location = useLocation()
+    const aId = location.state?.aId
     const navigate = useNavigate();
     const [appointments , setAppointments] = useState<userAppointmentType[]>();
     const appointmentDetails = useSelector((state: IRootState)=> state.appointmentDetails)
@@ -48,7 +49,11 @@ export function AppointmentDetails(){
     } ,[aId])
     const onSearch = ()=>{
         const getPhone = phone.current
-        navigate(`/details/${getPhone}`)
+        navigate(`/details` , {
+            state : {
+                aId : getPhone
+            }
+        })
     } 
     return <div className="px-3 py-10">
           <div className="flex justify-center gap-5">

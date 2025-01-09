@@ -13,7 +13,7 @@ const navlinks = [
     } , 
     {
         name : 'Get Appointment Details' , 
-        link : '/details' 
+        link : '/details/' 
     } , 
     {
         name : 'About us' , 
