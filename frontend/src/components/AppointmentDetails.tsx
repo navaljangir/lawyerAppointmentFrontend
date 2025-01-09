@@ -7,7 +7,7 @@ import { lawyerDetailType } from "src/lib/slices/bookingDetails";
 import { LawyerDetailsPage } from "./LawyerDetails";
 import { useSelector } from "react-redux";
 import { IRootState } from "src/lib/store";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 interface userAppointmentType  {
@@ -23,6 +23,7 @@ interface userAppointmentType  {
 export function AppointmentDetails(){
     const phone= useRef("");
     const {aId} = useParams()
+    const navigate = useNavigate();
     const [appointments , setAppointments] = useState<userAppointmentType[]>();
     const appointmentDetails = useSelector((state: IRootState)=> state.appointmentDetails)
     const allLawyers = useSelector((state : IRootState)=> state.allLawyers)
@@ -44,18 +45,21 @@ export function AppointmentDetails(){
            }
         })
         setAppointments(mapDataWithLawyer) 
-    } ,[])
+    } ,[aId])
     const onSearch = ()=>{
-
+        const getPhone = phone.current
+        navigate(`/details/${getPhone}`)
     } 
     return <div className="px-3 py-10">
           <div className="flex justify-center gap-5">
             <Input className="w-96" placeholder="Enter your Mobile/Appointment Id" onChange={(e)=> phone.current = e.target.value}/>
             <Button onClick={onSearch}>Search</Button>
             </div>
+            {appointments && <div className="text-4xl">Your Appointments</div>}
         {appointments?.map((val , index)=>{
             return <div key={index}>
-                     <div className="flex flex-col gap-3 text-lg mt-5">
+                     <div className="flex flex-col gap-3 text-lg mt-5 border-b border-black">
+                        <div>Appointment Id : {val.appointmentId}</div>
                     <div>
                         Client Name : {val.clientName}
                     </div>
