@@ -6,7 +6,6 @@ export const bookingDate = createSlice({
     initialState , 
     reducers : {
         setBookingDate : (_state , action)=>{
-            console.log(action.payload)
             return action.payload
         }
     }

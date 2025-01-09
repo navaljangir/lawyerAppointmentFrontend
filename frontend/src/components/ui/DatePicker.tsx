@@ -16,8 +16,11 @@ import { setBookingDate } from "src/lib/slices/bookingDate"
 export function DatePicker() {
   const date = useSelector((state: IRootState) => state.bookingDate)
   const dispatch = useDispatch()
-  const setDate = (val : Date | undefined)=>{
-        dispatch(setBookingDate(val?.toISOString()))
+  const setDate = (val: Date | undefined) => {
+    if (!val) {
+      return
+    }
+    dispatch(setBookingDate(val?.toISOString()))
   }
   return (
     <Popover>
@@ -39,7 +42,7 @@ export function DatePicker() {
           selected={new Date(date)}
           onSelect={setDate}
           initialFocus
-          disabled={(date)=> {
+          disabled={(date) => {
             const currDate = new Date()
             currDate.setHours(0)
             currDate.setMinutes(0)

@@ -4,7 +4,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { IRootState } from "src/lib/store"
 import { useEffect, useState } from "react"
 import { firms, lawyerTypes } from "src/lib/data/database"
-import { setLawyers } from "src/lib/slices/selectLawyers"
 import { Button } from "./ui/button"
 import { BookingSideBar } from "./BookingSidebar"
 import { lawyerDetailType, setBookingDetails } from "src/lib/slices/bookingDetails"
@@ -13,7 +12,8 @@ import { LawyerDetailsPage } from "./LawyerDetails"
 export function Lawyers() {
     const [lawyerType,setLawyerType] = useState('.')
     const [lawyerFirm, setLawyerFirm] = useState('.')
-    const lawyers = useSelector((state: IRootState) => state.selectLawyers)
+    const allLawyers = useSelector((state : IRootState)=> state.allLawyers)
+    const [lawyers , setLawyers] = useState(allLawyers)
     const [bookingSidebarToggle , setBookingSidebarToggle] = useState(false)
     const dispatch = useDispatch()
     const changeLawyerType = (val: string) => {
@@ -23,16 +23,24 @@ export function Lawyers() {
         setLawyerFirm(val)
     }
     const bookAppointment = (val : lawyerDetailType)=>{
-        console.log(val)
         if(bookingSidebarToggle==false){
             setBookingSidebarToggle((val)=> !val)
         }
         dispatch(setBookingDetails(val))
     }
     useEffect(() => {
-        console.log('lawyerType:', lawyerType)
-        console.log('lawyerFirm:', lawyerFirm)
-        dispatch(setLawyers({ lawyerFirm, lawyerType }))
+        setLawyers(()=>{ return allLawyers.filter((val) => {
+                        if (lawyerFirm != '.' && lawyerType != '.') {
+                            return val.firm == lawyerFirm && val.type.find((lawType) => { return lawType == lawyerType })
+                        }
+                        if (lawyerFirm != '.') {
+                            return val.firm == lawyerFirm
+                        }
+                        if (lawyerType != '.') {
+                            return val.type.find((lawType) => { return lawType == lawyerType })
+                        }
+                        return true
+                    })})
     }, [lawyerType, lawyerFirm])
     return <div className="">
         <div className="flex gap-2 pt-10 px-10">

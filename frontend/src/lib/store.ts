@@ -1,15 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import selectLawyerReducer from "./slices/selectLawyers";
 import  bookingDetailsReducer from "./slices/bookingDetails";
 import bookingDateReducer from "./slices/bookingDate";
 import  selectSlotReducer from "./slices/selectSlot";
+import appointmentDetailsReducer from "./slices/appointmentDetails";
+import allLawyersReducer from "./slices/allLawyers";
 
 export const store = configureStore({
     reducer : {
-        selectLawyers : selectLawyerReducer,
         bookingDetails : bookingDetailsReducer,
         bookingDate : bookingDateReducer,
-        selectSlot : selectSlotReducer
+        selectSlot : selectSlotReducer,
+        appointmentDetails : appointmentDetailsReducer,
+        allLawyers : allLawyersReducer
     }
 })
 

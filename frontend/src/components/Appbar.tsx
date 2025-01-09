@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom"
+import { Button } from "./ui/button"
 
 
 const navlinks = [
@@ -7,22 +9,23 @@ const navlinks = [
     } , 
     {
        name : 'Lawyers', 
-       link : 'lawyers' 
+       link : '/lawyers' 
     } , 
     {
         name : 'Get Appointment Details' , 
-        link : 'details' 
+        link : '/details' 
     } , 
     {
         name : 'About us' , 
-        link : '/about'
+        link : 'about'
     }, 
 ]
 export function Appbar(){
+    const navigate = useNavigate()
     return <div className="border-b">
         <div className="flex justify-center gap-20 px-40 py-5">
             {navlinks.map((val , index)=>{
-                return <a key={index} href={val.link} className="hover:underline hover:text-blue-800">{val.name}</a>
+                return <Button key={index} onClick={()=> navigate(`${val.link}`)} className="bg-white text-black hover:underline hover:bg-white hover:text-blue-800">{val.name}</Button>
             })}
         </div>
     </div>

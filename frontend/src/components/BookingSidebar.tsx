@@ -10,14 +10,18 @@ import { Input } from "./ui/input";
 import { setSlot } from "src/lib/slices/selectSlot";
 import { CircleCheck } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { setAppointmentDetials } from "src/lib/slices/appointmentDetails";
+import { appointLawyerSlot } from "src/lib/slices/allLawyers";
 
 export function BookingSideBar() {
     const bookingDetials = useSelector((state: IRootState) => state.bookingDetails)
     const [slots, setSlots] = useState(['']);
     const bookingDate = useSelector((state: IRootState) => state.bookingDate)
     const selectSlot = useSelector((state : IRootState) => state.selectSlot)
-    const [appointmentId , setAppointmentId] = useState("");
+    const appointmentDetails = useSelector((state : IRootState)=> state.appointmentDetails)
     const [booked, setBooked] = useState(true)
+    const navigate = useNavigate()
     const clientName = useRef('');
     const clientPhone= useRef('');
     const dispatch = useDispatch();
@@ -42,19 +46,40 @@ export function BookingSideBar() {
             })
             return;
         }
+        const alreadyBooked = appointmentDetails.find((val)=> {return val.clientPhone==clientPhone.current && val.appointmentDate==format(bookingDate , "dd-MM-y") && val.appointmentTime==selectSlot})
+        if(alreadyBooked){
+            toast.warning('You already have a booking at Selected Date/Time' , {
+                duration : 2000
+            })
+            return;
+        }
         const aId = (Math.random() + 1).toString(36).substring(7);
-        setAppointmentId(aId)
-        setBooked(true)
+        dispatch(setAppointmentDetials({
+            id : appointmentDetails.length ,
+            appointmentId : aId, 
+            clientName : clientName.current ,
+            clientPhone : clientPhone.current, 
+            lawyerId : bookingDetials.id,
+            appointmentDate: format(bookingDate , "dd-MM-y"),
+            appointmentTime : selectSlot
+        }))
+        dispatch(appointLawyerSlot({id : bookingDetials.id ,date:  format(bookingDate , "dd-MM-y") ,slot :  selectSlot}))
+        setBooked(true) 
+    toast.success('Appointment Booked' , {
+        duration : 2000, 
+        className : "text-green-600"
+    })
+        navigate(`/details/${aId}`)
     }
+    
     useEffect(() => {
-        
         const formattedDate = format(bookingDate, "dd-MM-y");
         const selectedDaySlots = bookingDetials.slots.find((val) => val.date === formattedDate)?.slots || []
         const appointedSlots = bookingDetials.appointments.find((val) => val.date === formattedDate)?.slots || []
         const availableSlots = selectedDaySlots.filter((val) => !appointedSlots.includes(val))
         setSlots(availableSlots)
         return setBooked(false)
-    }, [bookingDate])
+    }, [bookingDate, appointmentDetails])
     return (<div className="h-full px-5 py-10 flex flex-col gap-3">
         <div>
 
@@ -100,7 +125,7 @@ export function BookingSideBar() {
                     <CircleCheck/>   
                     </div>
                     <div>
-                        Appointment Booked, Appointment id {appointmentId}
+                        Appointment Booked, Appointment id {}
                     </div>
             </div>}
         <div className="flex justify-center mt-5">
