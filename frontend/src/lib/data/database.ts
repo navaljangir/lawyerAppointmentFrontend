@@ -10,6 +10,10 @@ export const lawyers = [
             {
                 date: '10-01-2025',
                 slots: ['10:00', '10:30', '11:30']
+            },
+            {
+                date : '17-01-2025',
+                slots : ['09:00']
             }
         ],
         appointments: [
@@ -30,6 +34,14 @@ export const lawyers = [
             {
                 date: '11-01-2025',
                 slots: ['09:00', '09:30', '10:00']
+            },
+            {
+                date : '11-01-2025',
+                slots : ['9:00']
+            },
+            {
+                date : '17-01-2025',
+                slots : ['09:00']
             }
         ],
         appointments: [
@@ -110,7 +122,8 @@ export const lawyers = [
             {
                 date: '15-01-2025',
                 slots: ['09:00', '09:30', '10:00']
-            }
+            },
+            
         ],
         appointments: [
             {
